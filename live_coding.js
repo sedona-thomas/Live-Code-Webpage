@@ -53,12 +53,12 @@ function makeNotes(code) {
     let notes = [];
     while (code.length > 0) {
         if (code.search(" ") < code.search("[")) {
-            notes.push(code.slice(0, code.search(" "));
+            notes.push(code.slice(0, code.search(" ")));
             code = code.slice(code.search(" ") + 1, -1);
         }
         else {
             times = eval(code.slice(0, code.search("[")));
-            patern = code.slice(code.search("[") + 1, code.search("]")).split(" ");
+            pattern = code.slice(code.search("[") + 1, code.search("]")).split(" ");
             for (i = 0; i < times; i++) {
                 notes = notes.concat(pattern);
             }

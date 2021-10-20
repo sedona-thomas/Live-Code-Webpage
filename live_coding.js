@@ -33,7 +33,7 @@ function parseCode(code) {
     //how could we allow for two lines that play at the same time?
     //what if we want variables?
     //how does this parsing technique limit us?
-    let notes = code.split(" ");
+    let notes = makeNotes(code);
 
     //notice this will fail if the input is not correct
     //how could you handle this? allow some flexibility in the grammar? fail gracefully?
@@ -44,6 +44,25 @@ function parseCode(code) {
                 "pitch" : eval(noteData[1])};
                 //what other things should be controlled? osc type? synthesis technique?
     });
+    return notes;
+}
+
+function makeNotes(code) {
+    let notes = [];
+    while (code.length > 0) {
+        if (code.search(" ") < code.search("[") {
+            notes.push(code.slice(0, code.search(" "));
+            code = code.slice(code.search(" ") + 1, -1);
+        }
+        else {
+            times = eval(code.slice(0, code.search("[")));
+            patern = code.slice(code.search("[")+1, code.search("]")).split(" ");
+            for (i = 0; i < times; i++) {
+                notes = notes.concat(pattern);
+            }
+            code = code.slice(code.search("]")+1, -1);
+        }  
+    }
     return notes;
 }
 
@@ -58,12 +77,8 @@ function reevaluate() {
 }
 
 playButton.addEventListener('click', function () {
-
     if (!audioCtx) {
         initAudio();
     }
-
     reevaluate();
-
-
 });

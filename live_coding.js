@@ -20,7 +20,7 @@ function scheduleAudio() {
     liveCodeState.forEach(noteData => {
         timings.gain.setTargetAtTime(1, audioCtx.currentTime + timeElapsedSecs, 0.01)
         osc.frequency.setTargetAtTime(noteData["pitch"], audioCtx.currentTime + timeElapsedSecs, 0.01)
-        timeElapsedSecs += noteData["length"]/10.0;
+        timeElapsedSecs += noteData["length"] / 10.0;
         timings.gain.setTargetAtTime(0, audioCtx.currentTime + timeElapsedSecs, 0.01)
         timeElapsedSecs += 0.2; //rest between notes
     });
@@ -40,9 +40,11 @@ function parseCode(code) {
     //ideally (probably), the music does not stop
     notes = notes.map(note => {
         noteData = note.split("@");
-        return   {"length" : eval(noteData[0]), //the 'eval' function allows us to write js code in our live coding language
-                "pitch" : eval(noteData[1])};
-                //what other things should be controlled? osc type? synthesis technique?
+        return {
+            "length": eval(noteData[0]), //the 'eval' function allows us to write js code in our live coding language
+            "pitch": eval(noteData[1])
+        };
+        //what other things should be controlled? osc type? synthesis technique?
     });
     return notes;
 }
@@ -50,18 +52,18 @@ function parseCode(code) {
 function makeNotes(code) {
     let notes = [];
     while (code.length > 0) {
-        if (code.search(" ") < code.search("[") {
+        if (code.search(" ") < code.search("[")) {
             notes.push(code.slice(0, code.search(" "));
             code = code.slice(code.search(" ") + 1, -1);
         }
         else {
             times = eval(code.slice(0, code.search("[")));
-            patern = code.slice(code.search("[")+1, code.search("]")).split(" ");
+            patern = code.slice(code.search("[") + 1, code.search("]")).split(" ");
             for (i = 0; i < times; i++) {
                 notes = notes.concat(pattern);
             }
-            code = code.slice(code.search("]")+1, -1);
-        }  
+            code = code.slice(code.search("]") + 1, -1);
+        }
     }
     return notes;
 }

@@ -56,11 +56,9 @@ function makeNotes(code) {
     let segment = ""
     for (char_index in code) {
         character = code[char_index]
-        // console.log("character: ", character)
-        // console.log("segment: ", segment)
         if (character == "[" && char_index != 0) {
             repeat_times = code[char_index - 1]
-            // Remove repeat_times from the segment
+            // Remove the first number from the segment.
             segment = ""
         } else if (character == " " && repeat_times == 1) {
             // Stop recording the segment, and add it to the processed notes.
@@ -68,6 +66,7 @@ function makeNotes(code) {
             segment = ""
         } else if (character == "]") {
             // Stop recording the segment, and add it to the processed notes.
+            // Can't handle nested repeat segments (for now) -- will default to the innermost one.
             for (let i = 0; i < repeat_times; i++) {
                 processed_segment = makeNotes(segment)
                 console.log("repeat times: ", repeat_times)

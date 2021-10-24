@@ -34,6 +34,7 @@ function parseCode(code) {
     //what if we want variables?
     //how does this parsing technique limit us?
     let notes = makeNotes(code);
+    console.log(notes)
 
     //notice this will fail if the input is not correct
     //how could you handle this? allow some flexibility in the grammar? fail gracefully?
@@ -50,22 +51,50 @@ function parseCode(code) {
 }
 
 function makeNotes(code) {
-    let notes = [];
-    while (code.length > 0) {
-        if (code.search(" ") < code.search("[")) {
-            notes.push(code.slice(0, code.search(" ")));
-            code = code.slice(code.search(" ") + 1, -1);
+    let processed_notes = [];
+    let repeat_times = 1
+    let segment = ""
+    for (char_index in code) {
+        character = code[char_index]
+        // console.log("character: ", character)
+        // console.log("segment: ", segment)
+        if (character == "[" && char_index != 0) {
+            repeat_times = code[char_index - 1]
+            // Remove repeat_times from the segment
+            segment = ""
+        } else if (character == " " && repeat_times == 1) {
+            // Stop recording the segment, and add it to the processed notes.
+            processed_notes.push(segment)
+            segment = ""
+        } else if (character == "]") {
+            // Stop recording the segment, and add it to the processed notes.
+            for (let i = 0; i < repeat_times; i++) {
+                processed_segment = makeNotes(segment)
+                console.log("repeat times: ", repeat_times)
+                console.log(i)
+                console.log(processed_segment)
+                for (s_index in processed_segment) {
+                    console.log("pushed")
+                    processed_notes.push(processed_segment[s_index])
+                }
+            }
+            repeat_times = 1
+            segment = ""
         }
         else {
-            times = eval(code.slice(0, code.search("[")));
-            pattern = code.slice(code.search("[") + 1, code.search("]")).split(" ");
-            for (i = 0; i < times; i++) {
-                notes = notes.concat(pattern);
-            }
-            code = code.slice(code.search("]") + 1, -1);
+            // Keep recording
+            segment += character
         }
     }
-    return notes;
+
+    // Add the last segment if not already added
+    if (segment != "") {
+        for (let i = 0; i < repeat_times; i++) {
+            processed_notes.push(segment)
+        }
+    }
+
+    return processed_notes;
 }
 
 function genAudio(data) {

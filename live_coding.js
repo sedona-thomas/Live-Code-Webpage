@@ -34,6 +34,7 @@ function parseCode(code) {
     //what if we want variables?
     //how does this parsing technique limit us?
     let notes = makeNotes(code);
+    // Will stop playing sounds if the input is empty (unlike the example). 
     console.log(notes)
 
     //notice this will fail if the input is not correct
@@ -68,7 +69,7 @@ function makeNotes(code) {
             // Stop recording the segment, and add it to the processed notes.
             // Can't handle nested repeat segments (for now) -- will default to the innermost one.
             for (let i = 0; i < repeat_times; i++) {
-                processed_segment = makeNotes(segment)
+                let processed_segment = makeNotes(segment)
                 console.log("repeat times: ", repeat_times)
                 console.log(i)
                 console.log(processed_segment)

@@ -8,11 +8,14 @@
 
 <body>
   <p>This is an almost minimal command-based live coding engine. Press the button to re-evaluate your code.
-    This language allows you to specify a rhythmic pattern of beats by entering a space-separated list of times and pitches. 
+    This language allows you to specify a rhythmic pattern of beats by entering a space-separated list of times and
+    pitches. You can also specify repeated patterns with a number then pair of brackets with a rhythmic pattern inside
+    of the brackets.
     You can also include javascript computation in the values.
-    As an example:
+    As an examples:
   </p>
   <p>1+1@220 2@220*2 1*3@270</p>
+  <p>3@340 2[1@220 2@330] 3@340</p>
   <button>re-evaluate</button>
   <input type="text" id="code">
 </body>
